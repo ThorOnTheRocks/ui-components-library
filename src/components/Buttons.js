@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { defaultTheme } from '../utils';
 import { typeScale } from '../utils';
-import { colors, red, neutral } from '../utils';
+import { red, neutral, orange } from '../utils';
 
 
 const Button = styled.button`
@@ -11,18 +11,33 @@ const Button = styled.button`
   border-radius: 6px;
   cursor: pointer;
   font-family: ${typeScale.primaryFont};
+  transition: background-color 0.2s linear, color 0.2s linear;
 `
 
 const PrimaryButton = styled(Button)`
   background-color: ${defaultTheme.primaryColor};
   border: none;
   color: ${neutral[100]};
+  
+
+  &:hover {
+    background-color: ${defaultTheme.primaryHoverColor};
+  }
+
+  &:active {
+    background-color: ${defaultTheme.primaryActiveColor};
+  }
 `;
 
 const SecondaryButton = styled(Button)`
   border: 2px solid ${defaultTheme.primaryColor};
   background: none;
   color: ${defaultTheme.primaryColor};
+
+  &:hover {
+    background-color: ${orange[300]};
+    color: ${defaultTheme.textColorInverted}
+  }
 `
 
 const WarningButton = styled(Button)`
