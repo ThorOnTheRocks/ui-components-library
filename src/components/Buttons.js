@@ -1,54 +1,118 @@
-import styled from 'styled-components';
-import { defaultTheme } from '../utils';
-import { typeScale } from '../utils';
-import { red, neutral, orange } from '../utils';
+import styled from "styled-components";
+import { typeScale } from "../utils";
+import { applyStyleModifiers } from "styled-components-modifiers";
 
+const BUTTON_MODIFIERS = {
+  small: () => `
+    font-size: ${typeScale.helperText};
+    padding: 8px;
+  `,
+  large: () => `
+    font-size: ${typeScale.header5};
+    padding: 16px 24px;
+  `,
+  warning: ({ theme }) => `
+    background-color: ${theme.status.warningColor};
+    color: ${theme.textColorInverted};
+    
+    &:hover, &:focus {
+      background-color: ${theme.status.warningColorHover};
+      outline: 3px solid ${theme.status.warningColorHover};
+      outline-offset: 2px;
+    }
 
-const Button = styled.button`
-  padding: 12px 24px;
-  font-size: ${typeScale.paragraph};
-  min-width: 100px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-family: ${typeScale.primaryFont};
-  transition: background-color 0.2s linear, color 0.2s linear;
-`
-
-const PrimaryButton = styled(Button)`
-  background-color: ${defaultTheme.primaryColor};
-  border: none;
-  color: ${neutral[100]};
-  
+    &:active {
+      background-color: ${theme.status.warningColorActive};
+    }
+  `,
+  error: ({ theme }) => `
+  background-color: ${theme.status.errorColor};
+  color: ${theme.textColorInverted};
 
   &:hover {
-    background-color: ${defaultTheme.primaryHoverColor};
+    background-color: ${theme.status.errorColorHover};
   }
 
   &:active {
-    background-color: ${defaultTheme.primaryActiveColor};
+    background-color: ${theme.status.errorColorActive};
+  }
+  `,
+  success: ({ theme }) => `
+  background-color: ${theme.status.successColor};
+  color: ${theme.textColorInverted};
+
+  &:hover {
+    background-color: ${theme.status.successColorHover};
+  }
+
+  &:active {
+    background-color: ${theme.status.successColorActive};
+  }
+  `
+};
+
+const Button = styled.button`
+  padding: 8px 12px;
+  font-size: ${typeScale.paragraph};
+  border-radius: 2px;
+  min-width: 100px;
+  cursor: pointer;
+  font-family: ${({ theme }) => theme.primaryFont};
+  transition: background-color 0.2s linear, color 0.2s linear;
+
+  &:hover {
+    background-color: ${({ theme }) => theme.primaryHoverColor};
+    color: ${({ theme }) => theme.textColorOnPrimary};
+  }
+
+  &:focus {
+    outline: 3px solid ${({ theme }) => theme.primaryHoverColor};
+    outline-offset: 2px;
+  }
+
+  &:active {
+    background-color: ${({ theme }) => theme.primaryActiveColor};
+    border-color: ${({ theme }) => theme.primaryActiveColor};
+    color: ${({ theme }) => theme.textColorOnPrimary};
   }
 `;
 
-const SecondaryButton = styled(Button)`
-  border: 2px solid ${defaultTheme.primaryColor};
-  background: none;
-  color: ${defaultTheme.primaryColor};
+export const PrimaryButton = styled(Button)`
+  background-color: ${({ theme }) => theme.primaryColor};
+  border: 2px solid transparent;
+  color: ${({ theme }) => theme.textColorOnPrimary};
 
-  &:hover {
-    background-color: ${orange[300]};
-    color: ${defaultTheme.textColorInverted}
+  &:disabled {
+    background-color: ${({ theme }) => theme.disabled};
+    color: ${({ theme }) => theme.textOnDisabled};
+    cursor: not-allowed;
   }
-`
 
-const WarningButton = styled(Button)`
-  background-color: ${red[100]};
-  color: ${neutral[100]};
-  border: none;
+  ${applyStyleModifiers(BUTTON_MODIFIERS)}
+`;
 
-`
+export const SecondaryButton = styled(Button)`
+  border: 2px solid ${({ theme }) => theme.primaryColor};
+  color: ${({ theme }) => theme.primaryColor};
+  background: none;
 
-export {
-  PrimaryButton,
-  SecondaryButton,
-  WarningButton
-};
+  &:disabled {
+    background: none;
+    border: 2px solid ${({ theme }) => theme.disabled};
+    color: ${({ theme }) => theme.disabled};
+    cursor: not-allowed;
+  }
+  ${applyStyleModifiers(BUTTON_MODIFIERS)}
+`;
+
+export const TertiaryButton = styled(Button)`
+  border: 2px solid transparent;
+  color: ${({ theme }) => theme.primaryColor};
+  background: none;
+
+  &:disabled {
+    color: ${({ theme }) => theme.disabled};
+    cursor: not-allowed;
+  }
+  ${applyStyleModifiers(BUTTON_MODIFIERS)}
+`;
